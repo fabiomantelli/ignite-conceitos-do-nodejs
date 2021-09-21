@@ -64,27 +64,53 @@ app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
   users.forEach(user => {
     if (user.username === username) {
       user.todos.forEach(todo => {
-        if (todo.id == id) {
+        if (todo.id === id) {
           todo.title = title;
           todo.deadline = deadline;
-          return response.status(201).json(todo);
+          // return response.status(201).json(todo);
+        } else {
+          return response.status(400).json({ error: 'Todo is not exists.' })
+          console.log("yes");
         }
-        return response.status(400).json({ error: 'Todo is not exists.' })
       })
-
     }
-
   })
 });
 
 app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
   const { username } = request.headers;
   const id = request.params.id;
-  console.log(`id: ${id} and username: ${username}`);
+
+  users.forEach(user => {
+    if (user.username === username) {
+      user.todos.forEach(task => {
+        if (task.id === id) {
+          task.done = true
+          return response.status(201).json(task.done);
+        } else {
+          return response.status(400).json({error: 'Todo is not exists.'});
+        }
+      })
+    }
+  })
 });
 
 app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const { username } = request.headers;
+  const id = request.params.id;
+
+  users.forEach(user => {
+    if (user.username === username) {
+      user.todos.forEach(task => {
+        if (task.id === id) {
+          user.todos.splice(id, 1);
+          return response.status(201).json({ok: "ok"});
+        }
+      })
+    }
+  })
+  return response.status(400).json({error: 'Task is not exists.'});
+
 });
 
 module.exports = app;

@@ -16,6 +16,7 @@ describe('Users', () => {
     expect(validate(response.body.id)).toBe(true);
 
     expect(response.body).toMatchObject({
+      id: response.body.id,
       name: 'John Doe',
       username: 'johndoe',
       todos: []

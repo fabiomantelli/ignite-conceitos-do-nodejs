@@ -27,9 +27,9 @@ describe('Todos', () => {
       .set('username', userResponse.body.username);
 
     expect(response.body).toEqual(
-      expect.arrayContaining([
-        todoResponse.body
-      ]),
+      expect.arrayContaining(
+        [todoResponse.body]
+      ),
     )
   });
 
